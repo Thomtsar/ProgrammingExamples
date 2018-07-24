@@ -53,16 +53,13 @@ int ** pathFinder(int x,int y, int **findPath)
 	int i;
 
 	if(puzzle[x][y].white ==1) findPath[x][y] =1;
-
-
-
+	
 	for(i=y+1; i<N; i++)
 	{
 		if(puzzle[x][i].white==0 || findPath[x][i] == 1) break;
 		findPath[x][i] = 1;
 		findPath = pathFinder(x,i,findPath);
 	}
-
 
 	for(i=x+1; i<N; i++)
 	{
@@ -97,12 +94,11 @@ int calculateCost(int x, int y)
 	int i,j;
 	int **findPath;
 
-
 	i= x;
 	j= y;
 
 	puzzle[x][y].cost = 0;
-
+	
 	if(puzzle[x][y].white == 0)
 	{
 		findPath = malloc(N*sizeof(int *));
@@ -132,25 +128,24 @@ int calculateCost(int x, int y)
 
 		findPath = pathFinder(i,j,findPath);
 
-
-			if ( (y+1 < N && findPath[x][y+1]==0 && puzzle[x][y+1].white==1)
-					|| (y-1>=0 &&findPath[x][y-1]==0 && puzzle[x][y-1].white==1)
-					|| (x+1 <N && findPath[x+1][y]==0 && puzzle[x+1][y].white==1)
-					|| (x-1 >= 0 && findPath[x-1][y]==0  && puzzle[x-1][y].white==1) )
-				puzzle[x][y].cost ++;
-
+		if ( (y+1 < N && findPath[x][y+1]==0 && puzzle[x][y+1].white==1)
+				|| (y-1>=0 &&findPath[x][y-1]==0 && puzzle[x][y-1].white==1)
+				|| (x+1 <N && findPath[x+1][y]==0 && puzzle[x+1][y].white==1)
+				|| (x-1 >= 0 && findPath[x-1][y]==0  && puzzle[x-1][y].white==1) )
+			puzzle[x][y].cost ++;
 
 
-			if( (x+1 < N && puzzle[x+1][y].white ==0)
-					|| (y+1 < N && puzzle[x][y+1].white ==0)
-					|| (x-1 >= 0 && puzzle[x-1][y].white ==0 )
-					|| (y-1 >= 0 && puzzle[x][y-1].white ==0 ) )
-				puzzle[x][y].cost ++ ;
 
-			if(puzzle[x][y].cost >= 1) return 2;
+		if( (x+1 < N && puzzle[x+1][y].white ==0)
+				|| (y+1 < N && puzzle[x][y+1].white ==0)
+				|| (x-1 >= 0 && puzzle[x-1][y].white ==0 )
+				|| (y-1 >= 0 && puzzle[x][y-1].white ==0 ) )
+			puzzle[x][y].cost ++ ;
+
+		if(puzzle[x][y].cost >= 1) return 2;
 
 
-			return 0;
+		return 0;
 	}
 	i++;
 	while(i<N)
@@ -167,12 +162,12 @@ int calculateCost(int x, int y)
 	j++;
 	while(j<N)
 	{
-			if(puzzle[x][y].value == puzzle[i][j].value  && puzzle[i][j].white == 1)
-			{
-				puzzle[x][y].cost ++;
-				return 1;
-			}
-			j++;
+		if(puzzle[x][y].value == puzzle[i][j].value  && puzzle[i][j].white == 1)
+		{
+			puzzle[x][y].cost ++;
+			return 1;
+		}
+		j++;
 	}
 	j=y;
 
@@ -248,36 +243,36 @@ void setPuzzle(char *fileName)
 
 	for(i=0; i<N; i++)
 	{
-			for(j=0; j<N; j++)
+		for(j=0; j<N; j++)
+		{
+			k=0;
+			temp = getc(file);
+			while(isdigit(temp) != 0)
 			{
-				k=0;
+				c[k] = temp;
+				k++;
 				temp = getc(file);
-				while(isdigit(temp) != 0)
-				{
-					c[k] = temp;
-					k++;
-					temp = getc(file);
-				}
-				c[k] = '\0';
-
-
-
-				puzzle[i][j].value = atoi(c);
-				puzzle[i][j].white = 1;
-				puzzle[i][j].cost = 0;
-				puzzle[i][j].block = 0;
-
-				if(puzzle[i][j].value <1  || puzzle[i][j].value>N)
-				{
-					printf("The variable %d at (%d,%d) is bigger than the array length %d",
-							puzzle[i][j].value,i,j,N);
-					exit(ERROR);
-				}
-
-
-				printf("%d ",puzzle[i][j].value);
 			}
-			printf("\n");
+			c[k] = '\0';
+
+
+
+			puzzle[i][j].value = atoi(c);
+			puzzle[i][j].white = 1;
+			puzzle[i][j].cost = 0;
+			puzzle[i][j].block = 0;
+
+			if(puzzle[i][j].value <1  || puzzle[i][j].value>N)
+			{
+				printf("The variable %d at (%d,%d) is bigger than the array length %d",
+						puzzle[i][j].value,i,j,N);
+				exit(ERROR);
+			}
+
+
+			printf("%d ",puzzle[i][j].value);
+		}
+		printf("\n");
 	}
 	printf("\n \n");
 	for(i=0; i<N; i++)
@@ -288,8 +283,6 @@ void setPuzzle(char *fileName)
 		}
 
 	}
-
-
 
 	fclose(file);
 
@@ -314,14 +307,10 @@ void printBlack()
 
 	}
 
-
-
 }
 
 int simulatedAnneling()
 {
-
-
 	int newx,newy;
 	int x,y;
 	int DE;
@@ -398,11 +387,7 @@ int simulatedAnneling()
 	}
 
 	return 0;
-
-
 }
-
-
 
 int main(int argc, char *argv[])
 {
@@ -427,5 +412,4 @@ int main(int argc, char *argv[])
 	printBlack();
 
 	return 1;
-
 }
